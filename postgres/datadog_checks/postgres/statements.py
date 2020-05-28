@@ -20,8 +20,8 @@ except ImportError:
 STATEMENTS_QUERY = """
 SELECT {cols}
   FROM pg_stat_statements
-  LEFT JOIN pg_authid
-         ON pg_stat_statements.userid = pg_authid.oid
+  LEFT JOIN pg_roles
+         ON pg_stat_statements.userid = pg_roles.oid
   LEFT JOIN pg_database
          ON pg_stat_statements.dbid = pg_database.oid
 ORDER BY (pg_stat_statements.total_time / NULLIF(pg_stat_statements.calls, 0)) DESC;
@@ -63,7 +63,7 @@ PG_STAT_STATEMENTS_PER_STATEMENT_COLUMNS = {
 # Columns to apply as tags
 PG_STAT_STATEMENTS_TAG_COLUMNS = {
     'datname': ('pg_database.datname', 'db'),
-    'rolname': ('pg_authid.rolname', 'user'),
+    'rolname': ('pg_roles.rolname', 'user'),
     'query': ('pg_stat_statements.query', 'query'),
 }
 
